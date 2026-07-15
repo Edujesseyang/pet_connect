@@ -9,7 +9,7 @@ public class User {
     private String lastName;
     private String gender;
     private Date dateOfBirth;
-    private String password;
+    private String passwordHash;
     private String email;
     private String country;
     private String state;
@@ -24,8 +24,6 @@ public class User {
 
     public User() {
     }
-
-    
 
     // getters and setters
     public int getUserId() {
@@ -76,12 +74,12 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getEmail() {
