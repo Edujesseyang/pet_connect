@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pet_connect.backend_service.dto.request.ChangePasswordRequest;
+import com.pet_connect.backend_service.dto.respond.InnerRespond;
 import com.pet_connect.backend_service.entity.User;
 import com.pet_connect.backend_service.service.UserService;
-import com.pet_connect.backend_service.utility.InnerRespond;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;

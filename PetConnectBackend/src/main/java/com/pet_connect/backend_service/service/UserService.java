@@ -5,9 +5,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pet_connect.backend_service.dto.respond.InnerRespond;
 import com.pet_connect.backend_service.entity.User;
 import com.pet_connect.backend_service.repository.UserDAO;
-import com.pet_connect.backend_service.utility.InnerRespond;
  
 @Service
 public class UserService {
