@@ -15,7 +15,9 @@ import com.pet_connect.backend_service.service.UserService;
 import com.pet_connect.backend_service.utility.InnerRespond;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -30,7 +32,13 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<InnerRespond<User>> signup(@RequestBody User user) {
         InnerRespond<User> result = userService.signupUser(user);
-        return result.getState() ? ResponseEntity.ok(result) : ResponseEntity.badRequest().body(result);
+        if (result.getState()) {
+            log.info("User signed up successfully: {}", user.getUsername());
+            return ResponseEntity.ok(result);
+        } else {
+            log.warn("User signup failed for username: {}. Reason: {}", user.getUsername(), result.getMessage());
+            return ResponseEntity.badRequest().body(result);
+        }
     }
 
     @Operation(summary = "Change user password", description = "This endpoint allows a user to change their password by providing their username and both old and new passwords.", tags = {
@@ -38,26 +46,50 @@ public class UserController {
     @PostMapping("/changePassword")
     public ResponseEntity<InnerRespond<User>> changePassword(@RequestBody ChangePasswordRequest request) {
         InnerRespond<User> result = userService.changePassword(request.getUsername(), request.getOldPassword(), request.getNewPassword());
-        return result.getState() ? ResponseEntity.ok(result) : ResponseEntity.badRequest().body(result);
+        if(result.getState()) {
+            log.info("Password changed successfully for user: {}", request.getUsername());
+            return ResponseEntity.ok(result);
+        } else {
+            log.warn("Password change failed for user: {}. Reason: {}", request.getUsername(), result.getMessage());
+            return ResponseEntity.badRequest().body(result);
+        }
     }
 
     @PostMapping("/login")
     public ResponseEntity<InnerRespond<User>> login(@RequestParam String username,
             @RequestParam String password) {
         InnerRespond<User> result = userService.login(username, password);
-        return result.getState() ? ResponseEntity.ok(result) : ResponseEntity.badRequest().body(result);
+        if (result.getState()) {
+            log.info("User logged in successfully: {}", username);
+            return ResponseEntity.ok(result);
+        } else {
+            log.warn("Login failed for user: {}. Reason: {}", username, result.getMessage());
+            return ResponseEntity.badRequest().body(result);
+        }
     }
 
     @GetMapping("/getUser/{username}")
     public ResponseEntity<InnerRespond<User>> getUserByUsername(@PathVariable String username) {
         InnerRespond<User> result = userService.getUserByUsername(username);
-        return result.getState() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
+        if (result.getState()) {
+            log.info("User retrieved successfully: {}", username);
+            return ResponseEntity.ok(result);
+        } else {
+            log.warn("Failed to retrieve user: {}. Reason: {}", username, result.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/getUser/{email}")
     public ResponseEntity<InnerRespond<User>> getUserByEmail(@PathVariable String email) {
         InnerRespond<User> result = userService.getUserByEmail(email);
-        return result.getState() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
+        if (result.getState()) {
+            log.info("User retrieved successfully by email: {}", email);
+            return ResponseEntity.ok(result);
+        } else {
+            log.warn("Failed to retrieve user by email: {}. Reason: {}", email, result.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
