@@ -1,6 +1,7 @@
 package com.pet_connect.backend_service.entity;
 
 public class Address {
+    private int addressId;
     private String country;
     private String state;
     private String city;
@@ -10,7 +11,8 @@ public class Address {
     public Address(){
 
     }
-    public Address(String street, String city, String state, String zipCode, String country) {
+    public Address(int addressId, String street, String city, String state, String zipCode, String country) {
+        this.addressId = addressId;
         this.street = street;
         this.city = city;
         this.state = state;
@@ -56,6 +58,14 @@ public class Address {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public int getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
     }
 
 

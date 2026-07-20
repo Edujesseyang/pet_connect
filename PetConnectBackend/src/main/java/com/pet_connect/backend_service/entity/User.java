@@ -1,18 +1,37 @@
 package com.pet_connect.backend_service.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private int userId;
 
     private String username;
-    private String firstName;
-    private String lastName;
+    private String fullname;
     private String passwordHash;
     private String email;
     private String role;
-    private boolean isActived;
-   
+    private Address address;
+    private List<Post> posts;
+    private List<Pet> ownedPets;
+    private List<Pet> savedPets;
 
     public User() {
+        posts = new ArrayList<>();
+        ownedPets = new ArrayList<>();
+        savedPets = new ArrayList<>();
+    }
+
+    public void addPost(Post post) {
+        posts.add(post);
+    }
+
+    public void addOwnedPet(Pet pet) {
+        ownedPets.add(pet);
+    }
+
+    public void addSavedPet(Pet pet) {
+        savedPets.add(pet);
     }
 
     // getters and setters
@@ -32,20 +51,8 @@ public class User {
         this.username = username;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getFullname() {
+        return fullname;
     }
 
     public String getPasswordHash() {
@@ -72,11 +79,35 @@ public class User {
         this.role = role;
     }
 
-    public boolean isActived() {
-        return isActived;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setActived(boolean actived) {
-        isActived = actived;
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public List<Pet> getOwnedPets() {
+        return ownedPets;
+    }
+
+    public void setOwnedPets(List<Pet> ownedPets) {
+        this.ownedPets = ownedPets;
+    }
+
+    public List<Pet> getSavedPets() {
+        return savedPets;
+    }
+
+    public void setSavedPets(List<Pet> savedPets) {
+        this.savedPets = savedPets;
     }
 }

@@ -1,18 +1,24 @@
 package com.pet_connect.backend_service.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class Pet {
 
     private int petId;
-
     private String name;
     private PetProfile petProfile;
-    private MedicalRecord medicalRecord;
+    private List<MedicalRecord> medicalRecordsList;
     private Address address;
     private String species;
     private String breed;
 
     public Pet() {
+        this.medicalRecordsList = new ArrayList<>();
+    }
+
+    public void addMedicalRecord(MedicalRecord medicalRecord) {
+        medicalRecordsList.add(medicalRecord);
     }
 
     public int getPetId() {
@@ -39,14 +45,6 @@ public class Pet {
         this.petProfile = petProfile;
     }
 
-    public MedicalRecord getMedicalRecord() {
-        return medicalRecord;
-    }
-
-    public void setMedicalRecord(MedicalRecord medicalRecord) {
-        this.medicalRecord = medicalRecord;
-    }
-
     public String getSpecies() {
         return species;
     }
@@ -69,6 +67,14 @@ public class Pet {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public List<MedicalRecord> getMedicalRecordsList() {
+        return medicalRecordsList;
+    }
+
+    public void setMedicalRecordsList(List<MedicalRecord> medicalRecordsList) {
+        this.medicalRecordsList = medicalRecordsList;
     }
 
 }

@@ -13,7 +13,6 @@ public class UserProfile {
     private String profilePhotoUrl;
     private Address address;
     private String socialMediaLinks;
-    private String interests;
 
     public int getUserId() {
         return userId;
@@ -93,13 +92,5 @@ public class UserProfile {
 
     public void setSocialMediaLinks(String socialMediaLinks) {
         this.socialMediaLinks = socialMediaLinks;
-    }
-
-    public String getInterests() {
-        return interests;
-    }
-
-    public void setInterests(String interests) {
-        this.interests = interests;
     }
 }

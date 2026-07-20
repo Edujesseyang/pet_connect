@@ -1,15 +1,17 @@
 package com.pet_connect.backend_service.entity;
 
+import java.sql.Timestamp;
+
 public class Post {
     private int postId;
     private int userId;
     private int petId;
+    private Timestamp createdAt;
     private String title;
     private String content;
     private String type;
     private double adoptionFee;
     private Address pickupLocation;
-    private Address deliveryLocation;
 
     public int getPostId() {
         return postId;
@@ -75,13 +77,12 @@ public class Post {
         this.pickupLocation = pickupLocation;
     }
 
-    public Address getDeliveryLocation() {
-        return deliveryLocation;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setDeliveryLocation(Address deliveryLocation) {
-        this.deliveryLocation = deliveryLocation;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
-
     
 }

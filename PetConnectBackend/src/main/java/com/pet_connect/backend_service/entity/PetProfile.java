@@ -2,30 +2,15 @@ package com.pet_connect.backend_service.entity;
 
 import java.sql.Date;
 public class PetProfile {
-    private int petId;
-
     private String sex;
     private Date dateOfBirth;
     private String color;
-    private String microchipId;
+    private String microchipNumber;
     private String size;
     private String weight;
     private String description;
     private String friendlyLevel;
     private Boolean isTrained;
-    private String energyLevel;
-    private String activityLevel;
-    private String favoriteActivities;
-    private String favoriteToys;
-    private String favoriteTreats;
-
-    public int getPetId() {
-        return petId;
-    }
-
-    public void setPetId(int petId) {
-        this.petId = petId;
-    }
 
     public String getSex() {
         return sex;
@@ -49,14 +34,6 @@ public class PetProfile {
 
     public void setColor(String color) {
         this.color = color;
-    }
-
-    public String getMicrochipId() {
-        return microchipId;
-    }
-
-    public void setMicrochipId(String microchipId) {
-        this.microchipId = microchipId;
     }
 
     public String getSize() {
@@ -99,44 +76,12 @@ public class PetProfile {
         this.isTrained = isTrained;
     }
 
-    public String getEnergyLevel() {
-        return energyLevel;
+    public String getMicrochipNumber() {
+        return microchipNumber;
     }
 
-    public void setEnergyLevel(String energyLevel) {
-        this.energyLevel = energyLevel;
-    }
-
-    public String getActivityLevel() {
-        return activityLevel;
-    }
-
-    public void setActivityLevel(String activityLevel) {
-        this.activityLevel = activityLevel;
-    }
-
-    public String getFavoriteActivities() {
-        return favoriteActivities;
-    }
-
-    public void setFavoriteActivities(String favoriteActivities) {
-        this.favoriteActivities = favoriteActivities;
-    }
-
-    public String getFavoriteToys() {
-        return favoriteToys;
-    }
-
-    public void setFavoriteToys(String favoriteToys) {
-        this.favoriteToys = favoriteToys;
-    }
-
-    public String getFavoriteTreats() {
-        return favoriteTreats;
-    }
-
-    public void setFavoriteTreats(String favoriteTreats) {
-        this.favoriteTreats = favoriteTreats;
+    public void setMicrochipNumber(String microchipNumber) {
+        this.microchipNumber = microchipNumber;
     }
 
     
