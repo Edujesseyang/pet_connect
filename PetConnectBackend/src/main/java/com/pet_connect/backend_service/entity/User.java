@@ -12,14 +12,17 @@ public class User {
     private String email;
     private String role;
     private Address address;
+    private UserProfile userProfile;
     private List<Post> posts;
     private List<Pet> ownedPets;
-    private List<Pet> savedPets;
+    private List<Post> savedPosts;
+    private List<Post> appliedPosts;
 
     public User() {
         posts = new ArrayList<>();
         ownedPets = new ArrayList<>();
-        savedPets = new ArrayList<>();
+        savedPosts = new ArrayList<>();
+        appliedPosts = new ArrayList<>();
     }
 
     public void addPost(Post post) {
@@ -30,8 +33,12 @@ public class User {
         ownedPets.add(pet);
     }
 
-    public void addSavedPet(Pet pet) {
-        savedPets.add(pet);
+    public void addSavedPost(Post post) {
+        savedPosts.add(post);
+    }
+
+    public void addAppliedPost(Post post) {
+        appliedPosts.add(post);
     }
 
     // getters and setters
@@ -53,6 +60,10 @@ public class User {
 
     public String getFullname() {
         return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getPasswordHash() {
@@ -103,11 +114,27 @@ public class User {
         this.ownedPets = ownedPets;
     }
 
-    public List<Pet> getSavedPets() {
-        return savedPets;
+    public List<Post> getSavedPosts() {
+        return savedPosts;
     }
 
-    public void setSavedPets(List<Pet> savedPets) {
-        this.savedPets = savedPets;
+    public void setSavedPosts(List<Post> savedPosts) {
+        this.savedPosts = savedPosts;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+
+    public List<Post> getAppliedPosts() {
+        return appliedPosts;
+    }
+
+    public void setAppliedPosts(List<Post> appliedPosts) {
+        this.appliedPosts = appliedPosts;
     }
 }

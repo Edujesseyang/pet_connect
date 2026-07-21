@@ -13,9 +13,10 @@ CREATE TABLE addresses (
 
 CREATE TABLE users (
 	user_id INT PRIMARY KEY AUTO_INCREMENT,
+	username VARCHAR(100) NOT NULL UNIQUE,
 	fullname VARCHAR(100) NOT NULL,
 	email VARCHAR(100) NOT NULL UNIQUE,
-	pwd_hash VARCHAR(300) NOT NULL,
+	password_hash VARCHAR(300) NOT NULL,
 	role VARCHAR(30) NOT NULL,
 	address_id INT NOT NULL,
 	CONSTRAINT fk_users_addresses
@@ -33,7 +34,6 @@ CREATE TABLE users (
 );
 
 CREATE TABLE user_profiles (
-	user_profile_id INT PRIMARY KEY AUTO_INCREMENT,
 	user_id INT  NOT NULL UNIQUE,
 	gender VARCHAR(30),
 	date_of_birth DATE,
@@ -43,6 +43,8 @@ CREATE TABLE user_profiles (
 	bio VARCHAR(500),
 	profile_pic_url VARCHAR(500),
 	social_media_link VARCHAR(500),
+	CONSTRAINT pk_user_profiles
+		PRIMARY KEY (user_id),
 	CONSTRAINT fk_user_profiles_users
 		FOREIGN KEY (user_id)
 		REFERENCES users(user_id)
@@ -113,7 +115,6 @@ CREATE TABLE photos_of_pet (
 );
 
 CREATE TABLE pet_profiles (
-	pet_profile_id INT PRIMARY KEY AUTO_INCREMENT,
 	pet_id INT NOT NULL UNIQUE,
 	date_of_birth DATE,
 	sex VARCHAR(30),
@@ -124,6 +125,8 @@ CREATE TABLE pet_profiles (
 	is_trained BOOLEAN,
 	description VARCHAR(500),
 	microchip_number VARCHAR(100),
+	CONSTRAINT pk_pet_profiles
+		PRIMARY KEY (pet_id),
 	CONSTRAINT chk_pet_profiles_friendly_level
     CHECK (
         friendly_level IS NULL
@@ -137,10 +140,9 @@ CREATE TABLE pet_profiles (
 );
 
 CREATE TABLE medical_records (
-	medical_record_id INT PRIMARY KEY AUTO_INCREMENT,
-	pet_id INT,
-	vaccination VARCHAR(1000),
+	pet_id INT NOT NULL UNIQUE,
 	allergies VARCHAR(1000),
+	vaccination VARCHAR(1000),
 	medications VARCHAR(1000),
 	special_care VARCHAR(1000),
 	surgeries VARCHAR(1000),
@@ -148,6 +150,8 @@ CREATE TABLE medical_records (
 	imaging_results VARCHAR(1000),
 	spayed_neutered BOOLEAN,
 	note VARCHAR(5000),
+	CONSTRAINT pk_medical_records
+		PRIMARY KEY (pet_id),
 	CONSTRAINT fk_medical_records_pets
 		FOREIGN KEY (pet_id)
 		REFERENCES pets(pet_id)

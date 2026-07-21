@@ -1,16 +1,18 @@
 package com.pet_connect.backend_service.entity;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Post {
     private int postId;
     private int userId;
     private int petId;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     private String title;
     private String content;
     private String type;
-    private double adoptionFee;
+    private BigDecimal adoptionFee;
     private Address pickupLocation;
 
     public int getPostId() {
@@ -61,11 +63,11 @@ public class Post {
         this.type = type;
     }
 
-    public double getAdoptionFee() {
+    public BigDecimal getAdoptionFee() {
         return adoptionFee;
     }
 
-    public void setAdoptionFee(double adoptionFee) {
+    public void setAdoptionFee(BigDecimal adoptionFee) {
         this.adoptionFee = adoptionFee;
     }
 
@@ -77,11 +79,11 @@ public class Post {
         this.pickupLocation = pickupLocation;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
     

@@ -1,19 +1,30 @@
 package com.pet_connect.backend_service.entity;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+
 public class PetProfile {
+    private int petId;
     private String sex;
     private Date dateOfBirth;
     private String color;
     private String microchipNumber;
     private String size;
-    private String weight;
+    private BigDecimal weight;
     private String description;
-    private String friendlyLevel;
+    private Integer friendlyLevel;
     private Boolean isTrained;
 
     public String getSex() {
         return sex;
+    }
+
+    public int getPetId() {
+        return petId;
+    }
+
+    public void setPetId(int petId) {
+        this.petId = petId;
     }
 
     public void setSex(String sex) {
@@ -44,11 +55,11 @@ public class PetProfile {
         this.size = size;
     }
 
-    public String getWeight() {
+    public BigDecimal getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(BigDecimal weight) {
         this.weight = weight;
     }
 
@@ -60,11 +71,11 @@ public class PetProfile {
         this.description = description;
     }
 
-    public String getFriendlyLevel() {
+    public Integer getFriendlyLevel() {
         return friendlyLevel;
     }
 
-    public void setFriendlyLevel(String friendlyLevel) {
+    public void setFriendlyLevel(Integer friendlyLevel) {
         this.friendlyLevel = friendlyLevel;
     }
 
@@ -84,5 +95,4 @@ public class PetProfile {
         this.microchipNumber = microchipNumber;
     }
 
-    
 }

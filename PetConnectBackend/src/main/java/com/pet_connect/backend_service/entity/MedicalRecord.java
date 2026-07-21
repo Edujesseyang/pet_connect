@@ -1,18 +1,26 @@
 package com.pet_connect.backend_service.entity;
 
-
 public class MedicalRecord {
+    private int petId;
     private String vaccination;
     private String allergies;
     private String medications;
     private String surgeries;
     private String labResults;
     private String imagingResults;
-    private String notes;
+    private String note;
     private String specialCare;
     private Boolean spayedNeutered;
-    
-    public MedicalRecord(){
+
+    public MedicalRecord() {
+    }
+
+    public int getPetId() {
+        return petId;
+    }
+
+    public void setPetId(int petId) {
+        this.petId = petId;
     }
 
     public String getAllergies() {
@@ -55,12 +63,12 @@ public class MedicalRecord {
         this.imagingResults = imagingResults;
     }
 
-    public String getNotes() {
-        return notes;
+    public String getNote() {
+        return note;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getVaccination() {
@@ -69,7 +77,7 @@ public class MedicalRecord {
 
     public void setVaccination(String vaccination) {
         this.vaccination = vaccination;
-    }   
+    }
 
     public String getSpecialCare() {
         return specialCare;
@@ -87,4 +95,3 @@ public class MedicalRecord {
         this.spayedNeutered = spayedNeutered;
     }
 }
-  

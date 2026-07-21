@@ -11,7 +11,6 @@ public class UserProfile {
     private String phoneNumber;
     private String bio;
     private String profilePhotoUrl;
-    private Address address;
     private String socialMediaLinks;
 
     public int getUserId() {
@@ -76,14 +75,6 @@ public class UserProfile {
 
     public void setProfilePhotoUrl(String profilePhotoUrl) {
         this.profilePhotoUrl = profilePhotoUrl;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     public String getSocialMediaLinks() {

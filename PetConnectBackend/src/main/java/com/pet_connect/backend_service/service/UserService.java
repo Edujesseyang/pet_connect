@@ -5,10 +5,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pet_connect.backend_service.dto.request.SignupRequest;
 import com.pet_connect.backend_service.dto.respond.InnerRespond;
+import com.pet_connect.backend_service.entity.Address;
 import com.pet_connect.backend_service.entity.User;
+import com.pet_connect.backend_service.entity.UserProfile;
 import com.pet_connect.backend_service.repository.UserDAO;
- 
+
 @Service
 public class UserService {
     private final UserDAO dao;
@@ -20,48 +23,73 @@ public class UserService {
     }
 
     @Transactional
-    public InnerRespond<User> signupUser(User user) {
-        if (!ispasswordValid(user.getPasswordHash())) {
+    public InnerRespond<User> signupUser(SignupRequest userInfo) {
+        if (!ispasswordValid(userInfo.getPasswordHash())) {
             return new InnerRespond<>(false,
                     "Invalid password format: 2 digits, 2 uppercase, 2 lowercase, 1 special character from ~!@#$%^&*_, length greater or equal to 8.",
                     null);
         }
 
-        if (dao.getUserByUsername(user.getUsername()) != null) {
+        if (dao.getUserByUsername(userInfo.getUsername()) != null) {
             return new InnerRespond<>(false, "Username is already in use", null);
         }
 
-        String hashPassword = passwordEncoder.encode(user.getPasswordHash());
-        user.setPasswordHash(hashPassword);
+        if (dao.isEmailExist(userInfo.getEmail())) {
+            return new InnerRespond<>(false, "Email is already in use", null);
+        }
 
-        dao.insertUser(user);
+        String hashPassword = passwordEncoder.encode(userInfo.getPasswordHash());
+        userInfo.setPasswordHash(hashPassword);
+
+        User user = new User();
+        user.setUsername(userInfo.getUsername());
+        user.setFullname(userInfo.getFullname());
+        user.setEmail(userInfo.getEmail());
+        user.setRole("regular");
+        user.setPasswordHash(userInfo.getPasswordHash());
+        Address address = new Address();
+        address.setCountry(userInfo.getCountry());
+        address.setState(userInfo.getState());
+        address.setCity(userInfo.getCity());
+        address.setStreet(userInfo.getStreet());
+        address.setZipCode(userInfo.getZipCode());
+        user.setAddress(address);
+        UserProfile userProfile = new UserProfile();
+        userProfile.setGender(userInfo.getGender());
+        userProfile.setDateOfBirth(userInfo.getDateOfBirth());
+        userProfile.setPhoneNumber(userInfo.getPhoneNumber());
+        userProfile.setBio(userInfo.getBio());
+        userProfile.setProfilePhotoUrl(userInfo.getProfilePhotoUrl());
+        userProfile.setSocialMediaLinks(userInfo.getSocialMediaLinks());
+        userProfile.setHouseholdType(userInfo.getHouseholdType());
+        userProfile.setAdoptionExp(userInfo.getAdoptionExp());
+        user.setUserProfile(userProfile);
+
+        user = dao.insertUser(user);
         user.setPasswordHash("*****");
         return new InnerRespond<>(true, "success", user);
     }
 
     @Transactional
     public InnerRespond<User> changePassword(String username, String oldPassword, String newPassword) {
-        User verfiedUser = verifyUser(username, oldPassword);
-        if (verfiedUser == null) {
+        if (!verifyUser(username, oldPassword)) {
             return new InnerRespond<>(false, "Old password is incorrect", null);
         }
 
         String hashNewPassword = passwordEncoder.encode(newPassword);
-        try {
-            dao.setPasswordByUsername(username, hashNewPassword);
-        } catch (RuntimeException e) {
-            return new InnerRespond<>(false, e.getMessage(), null);
-        }
-        verfiedUser.setPasswordHash("*****");
-        return new InnerRespond<>(true, "Password changed successfully", verfiedUser);
+        dao.setPasswordByUsername(username, hashNewPassword);
+
+        User updatedUser = dao.getUserByUsername(username);
+        updatedUser.setPasswordHash("*****");
+        return new InnerRespond<>(true, "Password changed successfully", updatedUser);
     }
 
     @Transactional
     public InnerRespond<User> login(String username, String password) {
-        User user = verifyUser(username, password);
-        if (user == null) {
+        if (!verifyUser(username, password)) {
             return new InnerRespond<>(false, "Username or password is incorrect", null);
         }
+        User user = dao.getUserByUsername(username);
         user.setPasswordHash("*****");
         return new InnerRespond<>(true, "Login successful", user);
     }
@@ -87,16 +115,15 @@ public class UserService {
     }
 
     // ================ Private Helper Methods =================
-    private User verifyUser(String username, String rawPassword) {
-        User user = dao.getUserByUsername(username);
-        if (user == null) {
-            return null;
+    private boolean verifyUser(String username, String rawPassword) {
+        if (!dao.isUserExist(username)) {
+            return false;
         }
 
-        if (passwordEncoder.matches(rawPassword, user.getPasswordHash())) {
-            return user;
+        if (!passwordEncoder.matches(rawPassword, dao.getUserPasswordHash(username))) {
+            return false;
         }
-        return null;
+        return true;
     }
 
     private boolean ispasswordValid(String password) {

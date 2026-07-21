@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pet_connect.backend_service.dto.request.ChangePasswordRequest;
+import com.pet_connect.backend_service.dto.request.SignupRequest;
 import com.pet_connect.backend_service.dto.respond.InnerRespond;
 import com.pet_connect.backend_service.entity.User;
 import com.pet_connect.backend_service.service.UserService;
@@ -30,13 +31,13 @@ public class UserController {
     @Operation(summary = "Sign up a new user", description = "This endpoint allows a new user to sign up by providing their details.", tags = {
             "User Management" })
     @PostMapping("/signup")
-    public ResponseEntity<InnerRespond<User>> signup(@RequestBody User user) {
-        InnerRespond<User> result = userService.signupUser(user);
+    public ResponseEntity<InnerRespond<User>> signup(@RequestBody SignupRequest userInfo) {
+        InnerRespond<User> result = userService.signupUser(userInfo);
         if (result.getState()) {
-            log.info("User signed up successfully: {}", user.getUsername());
+            log.info("User signed up successfully: {}", userInfo.getUsername());
             return ResponseEntity.ok(result);
         } else {
-            log.warn("User signup failed for username: {}. Reason: {}", user.getUsername(), result.getMessage());
+            log.warn("User signup failed for username: {}. Reason: {}", userInfo.getUsername(), result.getMessage());
             return ResponseEntity.badRequest().body(result);
         }
     }
@@ -68,7 +69,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getUser/{username}")
+    @GetMapping("/getUserByUsername/{username}")
     public ResponseEntity<InnerRespond<User>> getUserByUsername(@PathVariable String username) {
         InnerRespond<User> result = userService.getUserByUsername(username);
         if (result.getState()) {
@@ -80,7 +81,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getUser/{email}")
+    @GetMapping("/getUserByEmail/{email}")
     public ResponseEntity<InnerRespond<User>> getUserByEmail(@PathVariable String email) {
         InnerRespond<User> result = userService.getUserByEmail(email);
         if (result.getState()) {

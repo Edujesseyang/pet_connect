@@ -11,7 +11,7 @@ public class PetConnectBackendApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PetConnectBackendApplication.class, args);
-        log.info("PetConnect Backend Application started successfully.");
+        log.info("PetConnect Backend Application is running.");
     }
 
 }
