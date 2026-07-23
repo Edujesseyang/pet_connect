@@ -1,0 +1,40 @@
+import type { Pet } from "../types";
+
+export const mockPets: Pet[] = [
+  {
+    petId: 1,
+    name: "Biscuit",
+    species: "Dog",
+    breed: "Golden Retriever",
+    sex: "Male",
+    age: 2,
+    description: "Loves belly rubs and long walks. Great with kids.",
+    listingStatus: "AVAILABLE",
+    address: { city: "San Jose", state: "CA" },
+    photos: [{ photoUrl: "https://images.unsplash.com/photo-1633722715463-d30f4f325e24?w=600" }],
+  },
+  {
+    petId: 2,
+    name: "Mochi",
+    species: "Cat",
+    breed: "Domestic Shorthair",
+    sex: "Female",
+    age: 1,
+    description: "Shy at first, but a total lap cat once she trusts you.",
+    listingStatus: "AVAILABLE",
+    address: { city: "Fremont", state: "CA" },
+    photos: [{ photoUrl: "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=600" }],
+  },
+  {
+    petId: 3,
+    name: "Zuko",
+    species: "Dog",
+    breed: "Shiba Inu",
+    sex: "Male",
+    age: 4,
+    description: "Independent, well-trained, needs an experienced owner.",
+    listingStatus: "PENDING",
+    address: { city: "Milpitas", state: "CA" },
+    photos: [{ photoUrl: "https://images.unsplash.com/photo-1516371535707-512a1e83bb9a?w=600" }],
+  },
+];
