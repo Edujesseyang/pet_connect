@@ -1,44 +1,42 @@
-# PetConnect Frontend
+# PetConnectFrontend
 
-Vue 3 + TypeScript + Vite frontend for PetConnect.
+This template should help get you started developing with Vue 3 in Vite.
 
-## Setup
+## Recommended IDE Setup
 
-```bash
+[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+
+## Recommended Browser Setup
+
+- Chromium-based browsers (Chrome, Edge, Brave, etc.):
+  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
+- Firefox:
+  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
+  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+
+## Type Support for `.vue` Imports in TS
+
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vite.dev/config/).
+
+## Project Setup
+
+```sh
 npm install
-cp .env.example .env.local   # point VITE_API_BASE_URL at Jesse's backend (default: localhost:8080)
+```
+
+### Compile and Hot-Reload for Development
+
+```sh
 npm run dev
 ```
 
-## What's built
+### Type-Check, Compile and Minify for Production
 
-- **Routing** (`src/router`): `/`, `/login`, `/signup`, `/pets/:id`, `/pets/new`, `/favorites`, `/profile`
-- **Auth store** (Pinia, `src/stores/auth.ts`): login/signup/logout, persists to localStorage
-- **API layer** (`src/api`): typed wrappers around every backend endpoint, both the ones that
-  exist today and the ones described in `API_CONTRACT.md`
-- **Views**: Home/browse with search + species filter, pet detail, login, signup, add-a-listing
-  form, favorites, profile (with change password)
-- Pages that depend on endpoints not built yet (browse, pet detail, favorites) fall back to
-  sample data automatically so they're still reviewable -- you'll see a small banner when that's
-  happening.
-
-## Talking to the backend
-
-- Signup, login, change password, and add-pet are already wired to the real Spring Boot
-  endpoints (`PetController` / `UserController`).
-- Everything else is written against the shape described in `API_CONTRACT.md` -- once those
-  endpoints exist on the backend, delete the try/catch fallbacks in the views and it should
-  just work.
-
-## Folder structure
-
-```
-src/
-  api/        axios client + typed API calls
-  assets/     global CSS / design tokens
-  components/ NavBar, PetCard
-  router/     route definitions
-  stores/     Pinia auth store
-  types/      TS interfaces mirroring the ER diagram + backend DTOs
-  views/      page-level components
+```sh
+npm run build
 ```

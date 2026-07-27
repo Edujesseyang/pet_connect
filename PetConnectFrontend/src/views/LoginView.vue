@@ -1,92 +1,251 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter, useRoute, RouterLink } from "vue-router";
-import { useAuthStore } from "../stores/auth";
+import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 
-const auth = useAuthStore();
+import type {
+  ApiResponse,
+  LoginRequest,
+  User,
+} from "../types/api";
+
 const router = useRouter();
-const route = useRoute();
 
-const username = ref("");
-const password = ref("");
-const error = ref("");
-const loading = ref(false);
+const loginForm = reactive<LoginRequest>({
+  username: "",
+  password: "",
+});
 
-async function handleSubmit() {
-  error.value = "";
-  loading.value = true;
+const errorMessage = ref("");
+const isLoading = ref(false);
+
+async function handleLogin(): Promise<void> {
+  errorMessage.value = "";
+
+  if (!loginForm.username.trim()) {
+    errorMessage.value = "Username is required.";
+    return;
+  }
+
+  if (!loginForm.password) {
+    errorMessage.value = "Password is required.";
+    return;
+  }
+
   try {
-    const res = await auth.login(username.value, password.value);
-    if (res.state) {
-      const redirect = (route.query.redirect as string) || "/";
-      router.push(redirect);
-    } else {
-      error.value = res.message || "Login failed. Check your username and password.";
+    isLoading.value = true;
+
+    const response = await fetch(
+      "http://localhost:8080/users/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginForm),
+      },
+    );
+
+    const responseData =
+      (await response.json()) as ApiResponse<User>;
+
+    if (!response.ok || !responseData.state) {
+      throw new Error(
+        responseData.message || "Login failed.",
+      );
     }
-  } catch {
-    error.value = "Couldn't reach the server. Is the backend running?";
+
+    if (!responseData.data) {
+      throw new Error(
+        "Login succeeded, but no user data was returned.",
+      );
+    }
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(responseData.data),
+    );
+
+    await router.push("/dashboard");
+  } catch (error) {
+    errorMessage.value =
+      error instanceof Error
+        ? error.message
+        : "Unexpected login error.";
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 }
 </script>
 
 <template>
-  <div class="auth pc-container">
-    <form class="auth__card pc-card" @submit.prevent="handleSubmit">
-      <h1>Welcome back</h1>
-      <p class="auth__subtitle">Log in to save pets and message owners.</p>
+  <section class="login-page">
+    <form
+      class="login-card"
+      @submit.prevent="handleLogin"
+    >
+      <h1>Login</h1>
 
-      <div class="pc-field">
-        <label for="username">Username</label>
-        <input id="username" v-model="username" type="text" required autocomplete="username" />
+      <p class="subtitle">
+        Sign in to your Pet Connect account.
+      </p>
+
+      <div class="form-group">
+        <label for="username">
+          Username
+        </label>
+
+        <input
+          id="username"
+          v-model.trim="loginForm.username"
+          type="text"
+          placeholder="Enter your username"
+          autocomplete="username"
+        />
       </div>
 
-      <div class="pc-field">
-        <label for="password">Password</label>
-        <input id="password" v-model="password" type="password" required autocomplete="current-password" />
+      <div class="form-group">
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          v-model="loginForm.password"
+          type="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+        />
       </div>
 
-      <p v-if="error" class="pc-error">{{ error }}</p>
+      <p
+        v-if="errorMessage"
+        class="error-message"
+      >
+        {{ errorMessage }}
+      </p>
 
-      <button class="pc-btn pc-btn--primary auth__submit" type="submit" :disabled="loading">
-        {{ loading ? "Logging in…" : "Log in" }}
+      <button
+        type="submit"
+        :disabled="isLoading"
+      >
+        {{
+          isLoading
+            ? "Logging in..."
+            : "Login"
+        }}
       </button>
 
-      <p class="auth__footer">
-        Don't have an account? <RouterLink to="/signup">Sign up</RouterLink>
-      </p>
+      <RouterLink
+        class="signup-link"
+        to="/signup"
+      >
+        Create an account
+      </RouterLink>
+
+      <RouterLink
+        class="back-link"
+        to="/"
+      >
+        Back to home
+      </RouterLink>
     </form>
-  </div>
+  </section>
 </template>
 
 <style scoped>
-.auth {
+.login-page {
   display: flex;
   justify-content: center;
-  padding: 60px 24px;
+  min-height: calc(100vh - 80px);
+  padding: 80px 20px 40px;
+  background-color: #f4f6f8;
 }
 
-.auth__card {
+.login-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  height: fit-content;
   padding: 32px;
+  background-color: white;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
-.auth__subtitle {
-  color: var(--pc-muted);
-  margin: 0 0 24px;
-}
-
-.auth__submit {
-  width: 100%;
-  margin-top: 8px;
-}
-
-.auth__footer {
+h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
   text-align: center;
-  margin: 20px 0 0;
-  font-size: 0.9rem;
-  color: var(--pc-muted);
+}
+
+.subtitle {
+  margin: 0 0 28px;
+  color: #666666;
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: 600;
+}
+
+input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #2563eb;
+}
+
+button {
+  margin: 20px;
+  width: 100%;
+  padding: 12px;
+  color: white;
+  font-size: 16px;
+  background-color: #517ddd;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.error-message {
+  margin-bottom: 16px;
+  color: #dc2626;
+}
+
+.signup-link,
+.back-link {
+  display: block;
+  margin-top: 18px;
+  color: #2563eb;
+  text-align: center;
+  text-decoration: none;
+}
+
+.signup-link:hover,
+.back-link:hover {
+  text-decoration: underline;
 }
 </style>
