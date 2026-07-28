@@ -5,18 +5,51 @@ import java.util.List;
 
 public class Conversation {
     private int conversationId;
-    private User fromUser;
-    private User toUser;
+    private int fromUser;
+    private int toUser;
+    private int petId;
     private List<Message> messages;
+
+    public Conversation(int fromUser, int toUser, int petId) {
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+        this.petId = petId;
+    }
+
+    public int getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(int fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public int getToUser() {
+        return toUser;
+    }
+
+    public void setToUser(int toUser) {
+        this.toUser = toUser;
+    }
+
+    public int getPetId() {
+        return petId;
+    }
+
+    public void setPetId(int petId) {
+        this.petId = petId;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
 
     public Conversation() {
         this.messages = new ArrayList<>();
-    }
-
-    public Conversation(int conversationId, User fromUser, User toUser) {
-        this.conversationId = conversationId;
-        this.fromUser = fromUser;
-        this.toUser = toUser;
     }
 
     public void addMessage(Message message) {
@@ -30,22 +63,6 @@ public class Conversation {
 
     public void setConversationId(int conversationId) {
         this.conversationId = conversationId;
-    }
-
-    public User getFromUser() {
-        return fromUser;
-    }
-
-    public void setFromUser(User fromUser) {
-        this.fromUser = fromUser;
-    }
-
-    public User getToUser() {
-        return toUser;
-    }
-
-    public void setToUser(User toUser) {
-        this.toUser = toUser;
     }
 
 }
