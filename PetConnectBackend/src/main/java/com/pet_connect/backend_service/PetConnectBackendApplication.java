@@ -14,4 +14,6 @@ public class PetConnectBackendApplication {
         log.info("PetConnect Backend Application is running.");
     }
 
+    // Swagger Url : http://localhost:8080/swagger-ui/index.html
+
 }

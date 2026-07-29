@@ -21,7 +21,7 @@ public class PetService {
         this.petDAO = petDAO;
     }
 
-    public InnerRespond<Pet> addPet(AddPetRequest petInfo) {
+    public InnerRespond<Pet> addPet(AddPetRequest petInfo, int userId) {
         if (petInfo == null) {
             InnerRespond<Pet> response = new InnerRespond<>(false, "Pet information is missing.");
             return response;
@@ -83,10 +83,29 @@ public class PetService {
                 return new InnerRespond<>(false, "Pet adding faild.");
             }
 
+            petDAO.linkPetToOwner(pet.getPetId(), userId);
+
             return new InnerRespond<>(true, "Pet added successfully.", pet);
         } catch (RuntimeException e) {
             log.error("error while adding pet.", e.getMessage());
             return new InnerRespond<>(false, "Pet adding faild.");
         }
     }
+
+    public InnerRespond<Pet> deletePet(int petId) {
+        if (petDAO.deletePetById(petId)) {
+            return new InnerRespond<>(true, "Pet is deleted successfully.");
+        } else {
+            return new InnerRespond<>(false, "Error occurring while deleting: " + petId, null);
+        }
+    }
+
+    public InnerRespond<Pet> getPet(int petId) {
+        if (petDAO.isPetExist(petId)) {
+            Pet pet = petDAO.getPetByPetId(petId);
+            return new InnerRespond<>(true, "found the pet", pet);
+        }
+        return new InnerRespond<>(false, "connot find the pet");
+    }
+
 }
