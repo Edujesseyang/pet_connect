@@ -1,36 +1,31 @@
 package com.pet_connect.backend_service.entity;
 
+import java.time.LocalDateTime;
+
 public class Message {
-    private int messageId;
-    private User sender;
+    private int senderId;
     private String content;
-    private long timestamp;
+    private LocalDateTime timestemp;
+    private String senderName;
+    private int conversationId;
 
     public Message() {
     }
 
-    public Message(int messageId,  User sender, String content, long timestamp) {
-        this.messageId = messageId;
-        this.sender = sender;
+    public Message(int senderId, String content, LocalDateTime timestamp) {
+        this.senderId = senderId;
         this.content = content;
-        this.timestamp = timestamp;
+        this.timestemp = timestamp;
     }
 
     // getters and setters
-    public int getMessageId() {
-        return messageId;
+
+    public int getSenderId() {
+        return senderId;
     }
 
-    public void setMessageId(int messageId) {
-        this.messageId = messageId;
-    }
-
-    public User getSender() {
-        return sender;
-    }
-
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setSenderId(int senderId) {
+        this.senderId = senderId;
     }
 
     public String getContent() {
@@ -41,12 +36,28 @@ public class Message {
         this.content = content;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public LocalDateTime getTimestamp() {
+        return timestemp;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestemp = timestamp;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public int getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(int conversationId) {
+        this.conversationId = conversationId;
     }
     
 }

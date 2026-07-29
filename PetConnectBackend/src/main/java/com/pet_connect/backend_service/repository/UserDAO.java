@@ -106,6 +106,7 @@ public class UserDAO {
                 profile.setUserId(user.getUserId());
                 insertUserProfile(conn, profile);
                 conn.commit();
+                conn.setAutoCommit(true);
                 return user;
             } catch (SQLException | RuntimeException e) {
                 try {
@@ -391,6 +392,15 @@ public class UserDAO {
                     }
                 }
             }
+            try (PreparedStatement stmt = conn.prepareStatement(savedPostSql)) {
+                stmt.setInt(1, user.getUserId());
+
+                try (var rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        user.addPost(getPostByPostId(conn, rs.getInt("post_id")));
+                    }
+                }
+            }
             return user;
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -562,29 +572,34 @@ public class UserDAO {
         }
     }
 
-    public List<Photo> getPhotosByPetId(Connection conn, int petId) {
+    public List<Photo> getPhotosByPetId(
+            Connection conn,
+            int petId) throws SQLException {
+
         String sql = """
                 SELECT photo_id
                 FROM photos_of_pet
                 WHERE pet_id = ?
                 """;
+
+        List<Photo> photos = new ArrayList<>();
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            List<Photo> photoList = new ArrayList<>();
             stmt.setInt(1, petId);
+
             try (var rs = stmt.executeQuery()) {
-                if (!rs.next()) {
-                    return null;
-                }
                 while (rs.next()) {
-                    Photo photo = getPhotoByPhotoId(conn, rs.getInt("photo_id"));
-                    photoList.add(photo);
+                    Photo photo = getPhotoByPhotoId(
+                            conn,
+                            rs.getInt("photo_id"));
+
+                    if (photo != null) {
+                        photos.add(photo);
+                    }
                 }
             }
-            return photoList;
-        } catch (SQLException e) {
-            log.error("Batabase connect error", e.getMessage());
-            throw new RuntimeException("Database error occurred while fetching:", e);
         }
+        return photos;
     }
 
     public Photo getPhotoByPhotoId(Connection conn, int photoId) {
@@ -614,6 +629,22 @@ public class UserDAO {
         } catch (SQLException e) {
             log.error("Batabase connect error", e.getMessage());
             throw new RuntimeException("Database error occurred while fetching:", e);
+        }
+    }
+
+    public boolean deleteUser(int userId) {
+        String sql = """
+                DELETE FROM users
+                WHERE user_id = ?
+                """;
+
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            int affectedRow = stmt.executeUpdate();
+            return affectedRow == 1;
+        } catch (SQLException e) {
+            throw new RuntimeException("faild to delete a user");
         }
     }
 }

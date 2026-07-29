@@ -114,6 +114,13 @@ public class UserService {
         return new InnerRespond<>(true, "User found", user);
     }
 
+    public InnerRespond<?> deleteUser(int userId) {
+        if (dao.deleteUser(userId)) {
+            return new InnerRespond<>(true, "user is deleted");
+        }
+        return new InnerRespond<>(false, "cannot find the user");
+    }
+
     // ================ Private Helper Methods =================
     private boolean verifyUser(String username, String rawPassword) {
         if (!dao.isUserExist(username)) {

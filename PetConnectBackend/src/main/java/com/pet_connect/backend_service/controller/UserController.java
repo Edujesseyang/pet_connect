@@ -1,15 +1,16 @@
 package com.pet_connect.backend_service.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pet_connect.backend_service.dto.request.ChangePasswordRequest;
+import com.pet_connect.backend_service.dto.request.LoginRequest;
 import com.pet_connect.backend_service.dto.request.SignupRequest;
 import com.pet_connect.backend_service.dto.respond.InnerRespond;
 import com.pet_connect.backend_service.entity.User;
@@ -19,6 +20,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -44,10 +46,11 @@ public class UserController {
 
     @Operation(summary = "Change user password", description = "This endpoint allows a user to change their password by providing their username and both old and new passwords.", tags = {
             "User Management" })
-    @PostMapping("/changePassword")
+    @PostMapping("/change_password")
     public ResponseEntity<InnerRespond<User>> changePassword(@RequestBody ChangePasswordRequest request) {
-        InnerRespond<User> result = userService.changePassword(request.getUsername(), request.getOldPassword(), request.getNewPassword());
-        if(result.getState()) {
+        InnerRespond<User> result = userService.changePassword(request.getUsername(), request.getOldPassword(),
+                request.getNewPassword());
+        if (result.getState()) {
             log.info("Password changed successfully for user: {}", request.getUsername());
             return ResponseEntity.ok(result);
         } else {
@@ -57,19 +60,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<InnerRespond<User>> login(@RequestParam String username,
-            @RequestParam String password) {
-        InnerRespond<User> result = userService.login(username, password);
+    public ResponseEntity<InnerRespond<User>> login(@RequestBody LoginRequest request) {
+        InnerRespond<User> result = userService.login(request.getUsername(), request.getPassword());
         if (result.getState()) {
-            log.info("User logged in successfully: {}", username);
+            log.info("User logged in successfully: {}", request.getUsername());
             return ResponseEntity.ok(result);
         } else {
-            log.warn("Login failed for user: {}. Reason: {}", username, result.getMessage());
+            log.warn("Login failed for user: {}. Reason: {}", request.getUsername(), result.getMessage());
             return ResponseEntity.badRequest().body(result);
         }
     }
 
-    @GetMapping("/getUserByUsername/{username}")
+    @GetMapping("/get_user_by_username/{username}")
     public ResponseEntity<InnerRespond<User>> getUserByUsername(@PathVariable String username) {
         InnerRespond<User> result = userService.getUserByUsername(username);
         if (result.getState()) {
@@ -81,7 +83,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getUserByEmail/{email}")
+    @GetMapping("/get_user_by_email/{email}")
     public ResponseEntity<InnerRespond<User>> getUserByEmail(@PathVariable String email) {
         InnerRespond<User> result = userService.getUserByEmail(email);
         if (result.getState()) {
@@ -92,5 +94,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    
 
 }
