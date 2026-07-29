@@ -1,6 +1,6 @@
-CREATE DATABASE pet_connect2;
+CREATE DATABASE pet_connect;
 
-USE pet_connect2;
+USE pet_connect;
 
 CREATE TABLE
 	addresses (
