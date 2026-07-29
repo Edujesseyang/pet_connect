@@ -46,6 +46,7 @@ CREATE TABLE
 		url VARCHAR(500) NOT NULL UNIQUE,
 		description VARCHAR(500),
 		uploader_uid INT NOT NULL,
+		uploaded_at TIMESTAMP,
 		CONSTRAINT fk_photos_users FOREIGN KEY (uploader_uid) REFERENCES users (user_id) ON UPDATE CASCADE ON DELETE CASCADE
 	);
 
