@@ -184,3 +184,22 @@ CREATE TABLE
 		CONSTRAINT fk_messages_conversations FOREIGN KEY (conversation_id) REFERENCES conversations (conversation_id) ON UPDATE CASCADE ON DELETE CASCADE,
 		CONSTRAINT fk_messages_sender FOREIGN KEY (sender_id) REFERENCES users (user_id) ON DELETE CASCADE ON UPDATE CASCADE
 	);
+
+/* Indexing */
+CREATE INDEX idx_posts_type_created_at ON posts (type, created_at);
+
+CREATE INDEX idx_breeds_species_id ON breeds (species_id);
+
+CREATE INDEX idx_photos_of_pet_pet_id ON photos_of_pet (pet_id);
+
+CREATE INDEX idx_user_applies_post_post_id ON user_applies_post (post_id);
+
+CREATE INDEX idx_user_owns_pet_pet_id ON user_owns_pet (pet_id);
+
+CREATE INDEX idx_user_saves_post_post_id ON user_saves_post (post_id);
+
+CREATE INDEX idx_conversations_from_uid_started_at ON conversations (from_uid, started_at);
+
+CREATE INDEX idx_conversations_to_uid_started_at ON conversations (to_uid, started_at);
+
+CREATE INDEX idx_messages_conversation_sent_at ON messages (conversation_id, sent_at);
