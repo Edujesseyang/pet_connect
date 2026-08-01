@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 CREATE DATABASE petconnect;
 
 USE petconnect;
+=======
+CREATE DATABASE pet_connect;
+
+USE pet_connect;
+>>>>>>> origin/main
 
 CREATE TABLE
 	addresses (
@@ -148,8 +154,8 @@ CREATE TABLE
 CREATE TABLE
 	user_owns_pet (
 		user_id INT NOT NULL,
-		pet_id INT NOT NULL,
-		CONSTRAINT pk_user_owns_pet PRIMARY KEY (user_id, pet_id),
+		pet_id INT NOT NULL UNIQUE,
+		CONSTRAINT pk_user_owns_pet PRIMARY KEY pet_id,
 		CONSTRAINT fk_user_owns_pet_pets FOREIGN KEY (pet_id) REFERENCES pets (pet_id) ON UPDATE CASCADE ON DELETE CASCADE,
 		CONSTRAINT fk_user_owns_pet_users FOREIGN KEY (user_id) REFERENCES users (user_id) ON UPDATE CASCADE ON DELETE CASCADE
 	);
