@@ -1,4 +1,4 @@
-USE pet_connect;
+USE petconnect;
 
 INSERT INTO addresses (address_id, street, city, state, country, zipcode) VALUES
 (1, '101 Main St', 'San Jose', 'CA', 'USA', '95112'),
