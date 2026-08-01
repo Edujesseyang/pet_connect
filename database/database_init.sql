@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 CREATE DATABASE petconnect;
 
 USE petconnect;
-=======
-CREATE DATABASE pet_connect;
-
-USE pet_connect;
->>>>>>> origin/main
 
 CREATE TABLE
 	addresses (
