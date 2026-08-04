@@ -5,6 +5,8 @@ backend/.idea/
 # Frontend
 frontend/node_modules/
 frontend/dist/
+frontend/.idea/
+frontend/uploads/
 
 # Environment variables
 .env
@@ -15,6 +17,7 @@ frontend/dist/
 
 # macOS
 .DS_Store
+uploads/
 
 # IDE
 .idea/
